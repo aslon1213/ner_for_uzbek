@@ -10,13 +10,13 @@ WORKDIR /app
 
 # Copy the requirements for faster builds
 # Install system dependencies
+# Install Python dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
-
-# Install Python dependencies
-RUN pip install fastapi[standard] deeppavlov spacy
+COPY requirements.txt /app
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copy the application code into the working directory
 COPY . /app
