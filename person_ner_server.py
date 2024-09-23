@@ -19,13 +19,36 @@ class NerInput(BaseModel):
     texts: List[str]
 
 
-@app.get("/")
+@app.get("/many")
 async def predict_ner(NerInput: NerInput):
-    output = {}
-    res_uz = ner_model_uz(NerInput.texts)
-    output["uz"] = res_uz
-    for text in NerInput.texts:
+    texts = NerInput.texts
+    output = {"uz": {}, "ru": {}}
+    res_uz = ner_model_uz(texts)
+    output["uz"]["texts"] = res_uz[0]
+    output["uz"]["entities"] = res_uz[1]
+    for text in texts:
         doc = ner_model_ru(text)
         res_ru = [(ent.text, ent.label_) for ent in doc.ents]
-        output["ru"] = res_ru
+
+        # leave only entities which are person or per
+        output["ru"]["texts"] = [text.split()]
+        output["ru"]["entities"] = res_ru
+    return output
+
+
+@app.get("/")
+async def predict_ner_single(text: str):
+    output = {"uz": {}, "ru": {}}
+
+    texts = [text.strip()]
+    res_uz = ner_model_uz(texts)
+    output["uz"]["texts"] = res_uz[0]
+    output["uz"]["entities"] = res_uz[1]
+    for text in texts:
+        doc = ner_model_ru(text)
+        res_ru = [(ent.text, ent.label_) for ent in doc.ents]
+
+        # leave only entities which are person or per
+        output["ru"]["texts"] = [text.split()]
+        output["ru"]["entities"] = res_ru
     return output
