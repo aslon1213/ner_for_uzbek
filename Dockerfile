@@ -23,4 +23,4 @@ COPY . /app
 
 # Expose the port that the FastAPI app will run on
 # Run the FastAPI application
-CMD ["fastapi" "run" "person_ner_server.py"]
+CMD ["fastapi", "run", "person_ner_server.py"]
