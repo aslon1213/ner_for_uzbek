@@ -7,3 +7,4 @@ lib64/
 data/
 __pycache__/
 test_*
+*.pyc

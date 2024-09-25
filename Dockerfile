@@ -19,7 +19,7 @@ COPY utils/ requirements.txt /app/
 # RUN apt-get install watch
 # RUN pip install --upgrade pip && pip install -r requirements.txt
 RUN sh /app/install.sh
-
+ENV MODE="production"
 # Copy the application code into the working directory
 COPY models/ /app/models/
 COPY person_ner_server.py /app/
