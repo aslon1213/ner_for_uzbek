@@ -19,11 +19,25 @@ class NerInput(BaseModel):
     texts: List[str]
 
 
+words = ["muddatli", "smartbank", "pul"]
+
+
 @app.get("/many")
 async def predict_ner(NerInput: NerInput):
     texts = NerInput.texts
     output = {"uz": {}, "ru": {}}
     res_uz = ner_model_uz(texts)
+    # if muddatli is
+    for i, t in enumerate(res_uz[0][0]):
+        if any([word in t.lower() for word in words]):
+            res_uz[1][0][i] = "O"
+        if t.lower() == "muddatli":
+            res_uz[1][0][i] = "O"
+        if t.lower() == "smartbank":
+            res_uz[1][0][i] = "O"
+        if t.lower() == "pul":
+            res_uz[1][0][i] = "O"
+
     output["uz"]["texts"] = res_uz[0]
     output["uz"]["entities"] = res_uz[1]
     for text in texts:
@@ -33,6 +47,9 @@ async def predict_ner(NerInput: NerInput):
         # leave only entities which are person or per
         output["ru"]["texts"] = [text.split()]
         output["ru"]["entities"] = res_ru
+    # print in red
+
+    print(f"\033[91m {output}\033[00m")
     return output
 
 
@@ -51,4 +68,5 @@ async def predict_ner_single(text: str):
         # leave only entities which are person or per
         output["ru"]["texts"] = [text.split()]
         output["ru"]["entities"] = res_ru
+    print(f"\033[91m {output}\033[00m")
     return output

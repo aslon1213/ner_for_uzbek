@@ -1,3 +1,7 @@
 deeppavlov==1.7.0
 spacy
 fastapi-cli
+uvicorn
+torch
+transformers
+pytorch-crf
