@@ -15,13 +15,15 @@ RUN apt-get update && apt-get install -y \
     gcc \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
-COPY requirements.txt /app
+COPY utils/ requirements.txt /app/
 # RUN apt-get install watch
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN sh /app/install.sh
 
 # Copy the application code into the working directory
-COPY . /app
-RUN python -m spacy download ru_core_news_sm
+COPY models/ /app/models/
+COPY person_ner_server.py /app/
+# install spacy model
 # Expose the port that the FastAPI app will run on
 # Run the FastAPI application
 # CMD ["watch", "top"]

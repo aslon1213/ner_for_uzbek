@@ -1,8 +1,9 @@
-from fastapi import FastAPI
-from deeppavlov import build_model, configs
-from pydantic import BaseModel
-import spacy
 from typing import List
+
+import spacy
+from deeppavlov import build_model
+from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 
