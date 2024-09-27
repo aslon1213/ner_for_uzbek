@@ -6,3 +6,4 @@ uvicorn
 torch
 transformers
 pytorch-crf
+prometheus_client

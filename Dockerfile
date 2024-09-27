@@ -15,10 +15,12 @@ RUN apt-get update && apt-get install -y \
     gcc \
     libffi-dev \
     && rm -rf /var/lib/apt/lists/*
-COPY utils/ requirements.txt /app/
+COPY requirements.txt /app/
 # RUN apt-get install watch
 # RUN pip install --upgrade pip && pip install -r requirements.txt
-RUN sh /app/install.sh
+RUN pip install --upgrade pip && pip install -r requirements.txt
+COPY utils/ /app/
+RUN sh install.sh
 ENV MODE="production"
 # Copy the application code into the working directory
 COPY models/ /app/models/

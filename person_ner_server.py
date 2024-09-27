@@ -1,12 +1,14 @@
 from typing import List
-
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 import spacy
 from deeppavlov import build_model
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from pydantic import BaseModel
 import os
 
 app = FastAPI()
+# Prometheus a Counter metric
+REQUEST_COUNT = Counter("app_requests_total", "Total number of requests")
 
 
 # load model
@@ -32,6 +34,7 @@ words = ["muddatli", "smartbank", "pul"]
 
 @app.get("/many")
 async def predict_ner(NerInput: NerInput):
+    REQUEST_COUNT.inc()
     texts = NerInput.texts
     output = {"uz": {}, "ru": {}}
     res_uz = ner_model_uz(texts)
@@ -62,6 +65,7 @@ async def predict_ner(NerInput: NerInput):
 
 @app.get("/")
 async def predict_ner_single(text: str):
+    REQUEST_COUNT.inc()
     output = {"uz": {}, "ru": {}}
 
     texts = [text.strip()]
@@ -77,3 +81,9 @@ async def predict_ner_single(text: str):
         output["ru"]["entities"] = res_ru
     print(f"\033[91m {output}\033[00m")
     return output
+
+
+@app.get("/metrics")
+def metrics():
+    # Generate latest metrics for Prometheus
+    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
