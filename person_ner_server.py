@@ -86,10 +86,12 @@ async def predict_ner(NerInput: NerInput):
             res_uz[1][0][i] = "B-PERSON"
 
     # replaace the word from akamni to aka, etc
+    print(res_uz[0])
     for i in range(len(res_uz[0])):
-        word_in_list = res_uz[0][i]
-        if word_in_list[0].lower() in word_replacements:
-            res_uz[0][i] = word_replacements[word_in_list[0].lower()]
+        for j in range(len(res_uz[0][i])):
+            word = res_uz[0][i][j]
+            if word.lower() in word_replacements:
+                res_uz[0][i][j] = word_replacements[word.lower()]
 
     output["uz"]["texts"] = res_uz[0]
     output["uz"]["entities"] = res_uz[1]
