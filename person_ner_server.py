@@ -48,6 +48,7 @@ async def predict_ner(NerInput: NerInput):
             res_uz[1][0][i] = "O"
         if t.lower() == "pul":
             res_uz[1][0][i] = "O"
+
     output["uz"]["texts"] = res_uz[0]
     output["uz"]["entities"] = res_uz[1]
     for text in texts:
