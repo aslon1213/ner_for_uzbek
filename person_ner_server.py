@@ -29,7 +29,17 @@ class NerInput(BaseModel):
     texts: List[str]
 
 
-words = ["muddatli", "smartbank", "pul"]
+words = [
+    "muddatli",
+    "smartbank",
+    "pul",
+    "kartadan",
+    "karta",
+    "pulni",
+    "qaytarish",
+    "qaytariladi",
+    "qaytarishni",
+]
 
 
 @app.get("/many")
