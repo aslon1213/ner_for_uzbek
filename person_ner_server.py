@@ -40,6 +40,38 @@ words = [
     "qaytariladi",
     "qaytarishni",
 ]
+words = ["muddatli", "smartbank", "pul"]
+word_replacements = {
+    "akamga": "aka",
+    "akam": "aka",
+    "akamni": "aka",
+    "akamning": "aka",
+    "akajon": "aka",
+    "akasi": "aka",
+    "akasini": "aka",
+    "akasining": "aka",
+    "togam": "toga",
+    "togani": "toga",
+    "toganing": "toga",
+    "togasini": "toga",
+    "togasining": "toga",
+    "dadam": "dada",
+    "dadamni": "dada",
+    "dadamga": "dada",
+    "dadamning": "dada",
+    "otam": "ota",
+    "otamni": "ota",
+    "otamga": "ota",
+    "otamning": "ota",
+    "onam": "ona",
+    "onamni": "ona",
+    "onamga": "ona",
+    "onamning": "ona",
+    "amakim": "amaki",
+    "amakimni": "amaki",
+    "amakimga": "amaki",
+    "amakimning": "amaki",
+}
 
 
 @app.get("/many")
@@ -47,6 +79,9 @@ async def predict_ner(NerInput: NerInput):
     REQUEST_COUNT.inc()
     texts = NerInput.texts
     output = {"uz": {}, "ru": {}}
+    # for text in texts:
+    #     for word in word_replacements:
+    #         text = text.replace(word, word_replacements[word])
     res_uz = ner_model_uz(texts)
     # if muddatli is
     for i, t in enumerate(res_uz[0][0]):
@@ -58,6 +93,15 @@ async def predict_ner(NerInput: NerInput):
             res_uz[1][0][i] = "O"
         if t.lower() == "pul":
             res_uz[1][0][i] = "O"
+        if t.lower() in word_replacements:
+            res_uz[1][0][i] = "B-PERSON"
+
+    # replaace the word from akamni to aka, etc
+    for i in range(len(res_uz[0])):
+        word_in_list = res_uz[0][i]
+        if word_in_list[0].lower() in word_replacements:
+            res_uz[0][i] = word_replacements[word_in_list[0].lower()]
+
     output["uz"]["texts"] = res_uz[0]
     output["uz"]["entities"] = res_uz[1]
     for text in texts:
