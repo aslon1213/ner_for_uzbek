@@ -7,12 +7,8 @@ config_path = "ner_onnotes_bert.json"
 
 # Train the model
 def train_model_from_config(config_path):
-    # Load the configuration
-    # with open(config_path, "r", encoding="utf-8") as f:
-    #     config = json.load(f)
-
     # Build and train the model
-    model = train_model(config_path)
+    model = train_model(config_path)  # type: ignore
 
     return model
 
