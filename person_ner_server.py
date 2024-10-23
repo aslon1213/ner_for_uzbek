@@ -29,6 +29,17 @@ class NerInput(BaseModel):
     texts: List[str]
 
 
+words = [
+    "muddatli",
+    "smartbank",
+    "pul",
+    "kartadan",
+    "karta",
+    "pulni",
+    "qaytarish",
+    "qaytariladi",
+    "qaytarishni",
+]
 words = ["muddatli", "smartbank", "pul"]
 word_replacements = {
     "akamga": "aka",
