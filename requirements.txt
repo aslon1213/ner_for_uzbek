@@ -1,9 +1,10 @@
+numpy==1.23.2
 deeppavlov==1.7.0
 torch==2.4.1
-spacy
-fastapi-cli
-uvicorn
+fastapi==0.89.1
+uvicorn==0.18.3
+pandas==1.5.3
 torch
-transformers
+transformers==4.39.3
 pytorch-crf
 prometheus_client

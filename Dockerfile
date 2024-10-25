@@ -1,5 +1,5 @@
 # Use the official Python image as the base image
-FROM python:3.11
+FROM python:3.11-bookworm
 
 # Set environment variables to avoid Python buffer issues
 ENV PYTHONUNBUFFERED=1
@@ -18,14 +18,14 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt /app/
 # RUN apt-get install watch
 # RUN pip install --upgrade pip && pip install -r requirements.txt
-RUN pip install --upgrade pip && pip install -r requirements.txt
-COPY utils/ /app/
-RUN sh install.sh
+RUN  pip install --upgrade pip && pip install -U setuptools wheel && pip install cython && pip install -r requirements.txt
 ENV MODE="production"
 # Copy the application code into the working directory
 COPY models/ /app/models/
-COPY person_ner_server.py /app/
+COPY utils/install.sh /app/utils/
+# COPY person_ner_server.py /app/
 # install spacy model
+RUN sh /app/utils/install.sh
 # Expose the port that the FastAPI app will run on
 # Run the FastAPI application
-CMD ["fastapi", "run", "person_ner_server.py"]
+CMD ["uvicorn", "person_ner_server:app", "--host", "0.0.0.0", "--port", "8000"]

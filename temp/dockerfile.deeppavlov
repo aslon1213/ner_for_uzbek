@@ -1,0 +1,28 @@
+FROM deeppavlov/deeppavlov:latest
+# Set environment variables to avoid Python buffer issues
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements_2 for faster builds
+# Install Python dependencies
+COPY requirements_2.txt /app/
+RUN pip install --upgrade pip && pip install -r requirements_2.txt
+
+# Copy utility files and models
+COPY utils/ /app/
+COPY models/ /app/models/
+RUN sh install.sh
+
+# Set the environment mode
+ENV MODE="production"
+
+# Note: person_ner_server.py will not be copied in the Dockerfile
+
+# Expose the port for FastAPI
+EXPOSE 8000
+
+# Run the FastAPI application
+CMD ["uvicorn", "person_ner_server:app", "--host", "0.0.0.0", "--port", "8000"]
