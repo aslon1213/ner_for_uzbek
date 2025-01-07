@@ -28,4 +28,6 @@ COPY utils/install.sh /app/utils/
 RUN sh /app/utils/install.sh
 # Expose the port that the FastAPI app will run on
 # Run the FastAPI application
-CMD ["uvicorn", "person_ner_server:app", "--host", "0.0.0.0", "--port", "8000"]
+COPY loop.py /app/loop.py
+#CMD ["uvicorn", "person_ner_server:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python", "loop.py"]
