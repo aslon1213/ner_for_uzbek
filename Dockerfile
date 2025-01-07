@@ -27,6 +27,7 @@ COPY utils/install.sh /app/utils/
 # install spacy model
 RUN sh /app/utils/install.sh
 # Expose the port that the FastAPI app will run on
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 CMD curl --fail http://localhost:8000 || exit 1
 # Run the FastAPI application
 COPY loop.py /app/loop.py
 #CMD ["uvicorn", "person_ner_server:app", "--host", "0.0.0.0", "--port", "8000"]
