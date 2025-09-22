@@ -1,5 +1,5 @@
 # Use the official Python image as the base image
-FROM python:3.11-bookworm
+FROM python:3.11.11-bookworm
 
 # Set environment variables to avoid Python buffer issues
 ENV PYTHONUNBUFFERED=1
